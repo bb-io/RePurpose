@@ -32,12 +32,11 @@ public class Actions(InvocationContext invocationContext, IFileManagementClient 
             model = App == CredsNames.Anthropic ? "claude-3-5-sonnet-20241022" : "gpt-4o";
         }
 
-        var prompt = @$"
-                Repurpose the content of the message of the user. You also need to consider the following style elements and guides: 
-                {styleGuide}. 
-                {(language != null ? $" The response should be in {language}" : string.Empty)}
-
-            ";
+        var prompt = 
+@$"Repurpose the content of the message of the user. You also need to consider the following style elements and guides: 
+{styleGuide}
+{(language != null ? $" The response should be in {language}." : string.Empty)}
+";
 
         if (glossary.Glossary != null)
         {

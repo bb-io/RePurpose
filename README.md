@@ -6,7 +6,7 @@ Blackbird is the new automation backbone for the language technology industry. B
 
 <!-- begin docs -->
 
-The Re|Purpose app lets you repurpose content with any of the support LLM models. The models currently supported are Anthropic and OpenAI.
+The Re|Purpose app lets you repurpose content with any of the supported LLM models. The models currently supported are Anthropic and OpenAI.
 
 ## Before setting up
 
@@ -39,7 +39,7 @@ If you are connecting with Anthropic, make sure that:
 
 Repurpose content takes the following parameters:
 - **Original content** the original content in plain text.
-- **Style guide** how the content should be repurposed. E.g. target audience, tone of voice, vocabulary, etc.
+- **Style guide** how the content should be repurposed. E.g. target audience, tone of voice, vocabulary, length, etc.
 - **Model** (optional) the LLM model to use. If no model is selected, Open AI will use gpt4-o and Anthropic will use Claude 3.5 Sonnet
 - **Language** (optional) the target language the content should be created in.
 - **Glossary** (optional) a glossary that will be used for the repurposing.

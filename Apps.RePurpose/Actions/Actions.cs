@@ -40,7 +40,7 @@ public class Actions(InvocationContext invocationContext, IFileManagementClient 
 
             ";
 
-        if (glossary != null)
+        if (glossary.Glossary != null)
         {
             var glossaryAddition =
                 " Enhance the target text by incorporating relevant terms from our glossary where applicable. " +

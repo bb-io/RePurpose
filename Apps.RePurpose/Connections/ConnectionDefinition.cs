@@ -1,8 +1,8 @@
-﻿using Apps.App.Constants;
+﻿using Apps.RePurpose.Constants;
 using Blackbird.Applications.Sdk.Common.Authentication;
 using Blackbird.Applications.Sdk.Common.Connections;
 
-namespace Apps.App.Connections;
+namespace Apps.RePurpose.Connections;
 
 public class ConnectionDefinition : IConnectionDefinition
 {
@@ -10,11 +10,12 @@ public class ConnectionDefinition : IConnectionDefinition
     {
         new()
         {
-            Name = "Developer API key",
+            Name = "API key",
             AuthenticationType = ConnectionAuthenticationType.Undefined,
             ConnectionProperties = new List<ConnectionProperty>
             {
-                new(CredsNames.Token) { DisplayName = "API Token", Sensitive = true}
+                new(CredsNames.App) { DisplayName = "App", Description = "The AI app you want to use.", DataItems = [new(CredsNames.OpenAI, "Open AI"), new(CredsNames.Anthropic, "Anthropic")] },
+                new(CredsNames.ApiKey) { DisplayName = "API Key", Sensitive = true}
             }
         }
     };

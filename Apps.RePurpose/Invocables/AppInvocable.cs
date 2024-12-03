@@ -18,10 +18,6 @@ public class AppInvocable : BaseInvocable
 
     public AppInvocable(InvocationContext invocationContext) : base(invocationContext)
     {
-        if (App == CredsNames.Anthropic) {
-            Client = new AnthropicClient(Creds);
-        }
-
-        Client = new OpenAIClient(Creds);
+        Client = App == CredsNames.Anthropic ? new AnthropicClient(Creds) : new OpenAIClient(Creds);  
     }
 }

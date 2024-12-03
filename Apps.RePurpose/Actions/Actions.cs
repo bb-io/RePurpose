@@ -25,7 +25,7 @@ public class Actions(InvocationContext invocationContext, IFileManagementClient 
         [ActionParameter][Display("Style guide")] string styleGuide,
         [ActionParameter][Display("Model")][DataSource(typeof(ModelHandler))] string? model,
         [ActionParameter][Display("Language")][StaticDataSource(typeof(LanguageHandler))] string? language,
-        [ActionParameter][Display("Glossary")] FileReference? glossary)
+        [ActionParameter] GlossaryRequest glossary)
     {
         if (model == null)
         {
@@ -48,7 +48,7 @@ public class Actions(InvocationContext invocationContext, IFileManagementClient 
                 "If a term has variations or synonyms, consider them and choose the most appropriate " +
                 "translation to maintain consistency and precision. ";
 
-            var glossaryPromptPart = await GetGlossaryPromptPart(glossary, content, true);
+            var glossaryPromptPart = await GetGlossaryPromptPart(glossary.Glossary, content, true);
             if (glossaryPromptPart != null) prompt += (glossaryAddition + glossaryPromptPart);
         }
 

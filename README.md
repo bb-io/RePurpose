@@ -35,11 +35,12 @@ If you are connecting with Anthropic, make sure that:
 ## Actions
 
 - **Repurpose content** repurposes content to a specific target audience.
+- **Repurpose file** repurposes the file contents and returns a repurposed file. *Note*: it can only take any plaintext file type like txt, html or csv.
 
 Repurpose content takes the following parameters:
 - **Original content** the original content in plain text.
 - **Style guide** how the content should be repurposed. E.g. target audience, tone of voice, vocabulary, etc.
-- **Model** (optional) the LLM model to use.
+- **Model** (optional) the LLM model to use. If no model is selected, Open AI will use gpt4-o and Anthropic will use Claude 3.5 Sonnet
 - **Language** (optional) the target language the content should be created in.
 - **Glossary** (optional) a glossary that will be used for the repurposing.
 

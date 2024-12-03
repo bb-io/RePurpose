@@ -84,7 +84,7 @@ public class Actions(InvocationContext invocationContext, IFileManagementClient 
         };
     }
 
-        private async Task<string?> GetGlossaryPromptPart(FileReference glossary, string sourceContent, bool filter)
+    private async Task<string?> GetGlossaryPromptPart(FileReference glossary, string sourceContent, bool filter)
     {
         var glossaryStream = await fileManagementClient.DownloadAsync(glossary);
         var blackbirdGlossary = await glossaryStream.ConvertFromTbx();

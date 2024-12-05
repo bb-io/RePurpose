@@ -6,7 +6,7 @@ Blackbird is the new automation backbone for the language technology industry. B
 
 <!-- begin docs -->
 
-The RePurpose app lets you repurpose content with any of the support LLM models. The models currently supported are Anthropic and OpenAI.
+The RePurpose app lets you repurpose content with any of the supported LLM models. The models currently supported are Anthropic and OpenAI.
 
 ## Before setting up
 

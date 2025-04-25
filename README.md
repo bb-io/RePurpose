@@ -1,4 +1,4 @@
-# Blackbird.io RePurpose
+# Blackbird.io Blackbird Repurpose
 
 Blackbird is the new automation backbone for the language technology industry. Blackbird provides enterprise-scale automation and orchestration with a simple no-code/low-code platform. Blackbird enables ambitious organizations to identify, vet and automate as many processes as possible. Not just localization workflows, but any business and IT process. This repository represents an application that is deployable on Blackbird and usable inside the workflow editor.
 
@@ -6,7 +6,7 @@ Blackbird is the new automation backbone for the language technology industry. B
 
 <!-- begin docs -->
 
-The RePurpose app lets you repurpose content with any of the supported LLM models. The models currently supported are Anthropic and OpenAI.
+The Blackbird Repurpose app lets you repurpose content with any of the supported LLM models. The models currently supported are Anthropic and OpenAI.
 
 ## Before setting up
 

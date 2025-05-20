@@ -6,7 +6,7 @@
         <Nullable>enable</Nullable>
         <Product>Blackbird Repurpose</Product>
         <Description>Repurpose your content using different LLM models</Description>
-        <Version>1.0.3</Version>
+        <Version>1.0.4</Version>
         <AssemblyName>Apps.RePurpose</AssemblyName>
     </PropertyGroup>
 
@@ -14,6 +14,7 @@
         <PackageReference Include="Blackbird.Applications.Sdk.Common" Version="2.11.0" />
         <PackageReference Include="Blackbird.Applications.Sdk.Glossaries.Utils" Version="1.0.2-alpha1" />
         <PackageReference Include="Blackbird.Applications.Sdk.Utils" Version="1.0.25" />
+        <PackageReference Include="Blackbird.Applications.Sdk.Xliff.Utils" Version="1.1.3" />
         <PackageReference Include="MimeTypes" Version="2.5.2">
           <PrivateAssets>all</PrivateAssets>
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>

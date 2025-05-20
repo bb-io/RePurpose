@@ -14,16 +14,18 @@ using System.Text;
 using Blackbird.Applications.Sdk.Glossaries.Utils.Converters;
 using Blackbird.Applications.Sdk.Utils.Extensions.Files;
 using System.Net.Mime;
+using Blackbird.Xliff.Utils.Models.Content;
+using Blackbird.Xliff.Utils.Constants;
 
 namespace Apps.RePurpose.Actions;
 
 [ActionList]
 public class Actions(InvocationContext invocationContext, IFileManagementClient fileManagementClient) : AppInvocable(invocationContext)
 {
-    [Action("Repurpose content", Description = "Repurpose content for different target audiences, languages, tone of voices and platforms")]
+    [Action("Repurpose text", Description = "Repurpose content for different target audiences, languages, tone of voices and platforms")]
     public async Task<RepurposeResponse> RepurposeContent(        
         [ActionParameter][Display("Original content")] string content,        
-        [ActionParameter][Display("Style guide")] string styleGuide,
+        [ActionParameter][Display("Instructions")] string styleGuide,
         [ActionParameter][Display("Model")][DataSource(typeof(ModelHandler))] string? model,
         [ActionParameter][Display("Language")][StaticDataSource(typeof(LanguageHandler))] string? language,
         [ActionParameter] GlossaryRequest glossary)
@@ -60,28 +62,30 @@ public class Actions(InvocationContext invocationContext, IFileManagementClient 
         };
     }
 
-    [Action("Repurpose file", Description = "Repurpose content of a file for different target audiences, languages, tone of voices and platforms")]
-    public async Task<RepurposeFileResponse> RepurposeFile(
-    [ActionParameter][Display("Original file")] FileRequest file,
-    [ActionParameter][Display("Style guide")] string styleGuide,
+    [Action("Repurpose", Description = "Repurpose content of a file for different target audiences, languages, tone of voices and platforms")]
+    public async Task<RepurposeResponse> RepurposeFile(
+    [ActionParameter] FileRequest file,
+    [ActionParameter][Display("Instructions")] string styleGuide,
     [ActionParameter][Display("Model")][DataSource(typeof(ModelHandler))] string? model,
     [ActionParameter][Display("Language")][StaticDataSource(typeof(LanguageHandler))] string? language,
     [ActionParameter] GlossaryRequest glossary)
     {
         var fileStream = await fileManagementClient.DownloadAsync(file.File);
-        byte[] bytes = await fileStream.GetByteData();
-        string content = Encoding.UTF8.GetString(bytes);
 
-        var response = await RepurposeContent(content, styleGuide, model, language, glossary);
-
-        using var stream = new MemoryStream(Encoding.UTF8.GetBytes(response.RepurposedText));
-        var repurposedFile = await fileManagementClient.UploadAsync(stream, MimeTypes.GetMimeType(file.File.Name), file.File.Name);
-
-        return new RepurposeFileResponse()
+        var complexContent = await FileGroup.TryParse(fileStream);
+        string? content;
+        if (complexContent != null)
         {
-            RepurposedFile = repurposedFile,
-            SystemPrompt = response.SystemPrompt,
-        };
+            language ??= complexContent.TargetLanguage;
+            content = string.Join("\n",complexContent.IterateSegments().Select(x => x.Target == null ? x.GetSource(TagInclusion.Original) : x.GetTarget(TagInclusion.Ignore)));
+        } else
+        {
+            fileStream.Position = 0;
+            byte[] bytes = await fileStream.GetByteData();
+            content = Encoding.UTF8.GetString(bytes);
+        }
+
+        return await RepurposeContent(content, styleGuide, model, language, glossary);
     }
 
     private async Task<string?> GetGlossaryPromptPart(FileReference glossary, string sourceContent, bool filter)

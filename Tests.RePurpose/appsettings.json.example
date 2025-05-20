@@ -1,0 +1,7 @@
+{
+  "ConnectionDefinition": {
+    "app":  "open-ai",
+    "api-key": ""
+  },
+  "TestFolder": "C:\\Users\\"
+}

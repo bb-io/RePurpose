@@ -10,7 +10,7 @@ namespace Apps.RePurpose.Models
 {
     public class FileRequest
     {
-        [Display("Plaintext file", Description = "Can be any plaintext file type like txt, html or csv")]
+        [Display("File", Description = "Can be any plaintext file type like txt, html or csv. Alternatively XLIFF or HTML.")]
         public FileReference File { get; set; }
     }
 }

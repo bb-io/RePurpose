@@ -38,10 +38,16 @@ If you are connecting with Anthropic, make sure that:
 - **Repurpose** repurposes file contents and returns a repurposed file. Compatible formats are: plaintext (txt, csv, etc.), HTML and XLIFF.
 
 Repurpose takes the following parameters:
-- **Instructions** how the content should be repurposed. E.g. target audience, tone of voice, vocabulary, length, etc.
-- **Model** (optional) the LLM model to use. If no model is selected, Open AI will use gpt4-o and Anthropic will use Claude 3.5 Sonnet
+- **Instructions** how the content should be repurposed. You can use this for completely custom instructions as to how the content should be repurposed.
+- **Model** (optional) the LLM model to use. If no model is selected, Open AI will use gpt-4.1 and Anthropic will use Claude 3.5 Sonnet
 - **Language** (optional) the target language the content should be created in. If an XLIFF with a target language was given as input then this will be used if not manually set.
 - **Glossary** (optional) a glossary that will be used for the repurposing.
+- **Tone** (optional) the tone of voice for the content. This input is a dropdown of precreated tone of voice statement.
+- **Touchpoint** (optional) LinkedIn post, Blog post or Tweet. Each of these have a very specific set of instructions on how to create the perfect content for this touchpoint.
+- **Purpose** (optional) the purpose of the content if it was not included in instructions.
+- **Audience** (optional) the audience of the content if it was not included in instructions.
+
+> The general repurpose prompt is the following: "Repurpose the content of the message of the user. Do not add any tags, html markdown or otherwise. You also need to consider the following instructions, style elements and guide: {instructions}." Followed by inputs from tone, touchpoint, audience, purpose, language and glossary.
 
 ## Feedback
 

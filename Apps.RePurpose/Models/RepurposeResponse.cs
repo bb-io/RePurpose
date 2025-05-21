@@ -1,4 +1,7 @@
-﻿using Blackbird.Applications.Sdk.Common;
+﻿using Apps.RePurpose.DataSourceHandlers;
+using Blackbird.Applications.Sdk.Common;
+using Blackbird.Applications.Sdk.Common.Dictionaries;
+using Blackbird.Applications.Sdk.Common.Files;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,5 +17,20 @@ namespace Apps.RePurpose.Models
 
         [Display("System prompt")]
         public string SystemPrompt { get; set; }
+
+        [Display("Language")]
+        public string? Language { get; set; }
+
+        [Display("Tone")]
+        public string? Tone { get; set; }
+
+        [Display("Touchpoint")]
+        public string? Touchpoint { get; set; }
+
+        [Display("Purpose")]
+        public string? Purpose { get; set; }
+
+        [Display("Audience")]
+        public string? Audience { get; set; }
     }
 }

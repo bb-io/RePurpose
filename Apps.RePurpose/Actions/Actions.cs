@@ -25,23 +25,41 @@ public class Actions(InvocationContext invocationContext, IFileManagementClient 
     [Action("Repurpose text", Description = "Repurpose content for different target audiences, languages, tone of voices and platforms")]
     public async Task<RepurposeResponse> RepurposeContent(        
         [ActionParameter][Display("Original content")] string content,        
-        [ActionParameter][Display("Instructions")] string styleGuide,
-        [ActionParameter][Display("Model")][DataSource(typeof(ModelHandler))] string? model,
-        [ActionParameter][Display("Language")][StaticDataSource(typeof(LanguageHandler))] string? language,
-        [ActionParameter] GlossaryRequest glossary)
+        [ActionParameter] RepurposeRequest request)
     {
-        if (model == null)
+        if (request.Model == null)
         {
-            model = App == CredsNames.Anthropic ? "claude-3-5-sonnet-20241022" : "gpt-4o";
+            request.Model = App == CredsNames.Anthropic ? "claude-3-5-sonnet-20241022" : "gpt-4.1";
         }
 
-        var prompt = 
-@$"Repurpose the content of the message of the user. If the content contains any signs of file formatting, the file format and tags should be preserved. You also need to consider the following style elements and guides: 
-{styleGuide}
-{(language != null ? $" The response should be in {language}." : string.Empty)}
-";
+        var prompt = @$"Repurpose the content of the message of the user. Do not add any tags, html markdown or otherwise. You also need to consider the following instructions, style elements and guide: {request.StyleGuide}.";
 
-        if (glossary.Glossary != null)
+        if (request.Tone != null)
+        {
+            prompt += request.Tone;
+        }
+
+        if (request.Touchpoint != null)
+        {
+            prompt += GetTouchpointPromptPart(request.Touchpoint);
+        }
+
+        if (request.Audience != null)
+        {
+            prompt += $" The audience of the content will be {request.Audience}.";
+        }
+
+        if (request.Purpose != null)
+        {
+            prompt += $" The new purpose of the content will be {request.Purpose}.";
+        }
+
+        if (request.Language != null)
+        {
+            prompt += $" The repurposed content (response) should be in {request.Language}. This is very important.";
+        }
+
+        if (request.Glossary != null)
         {
             var glossaryAddition =
                 " Enhance the target text by incorporating relevant terms from our glossary where applicable. " +
@@ -49,26 +67,28 @@ public class Actions(InvocationContext invocationContext, IFileManagementClient 
                 "If a term has variations or synonyms, consider them and choose the most appropriate " +
                 "translation to maintain consistency and precision. ";
 
-            var glossaryPromptPart = await GetGlossaryPromptPart(glossary.Glossary, content, true);
+            var glossaryPromptPart = await GetGlossaryPromptPart(request.Glossary, content, true);
             if (glossaryPromptPart != null) prompt += (glossaryAddition + glossaryPromptPart);
         }
 
-        var completion = await Client.ExecuteCompletion(model, prompt, content);
+        var completion = await Client.ExecuteCompletion(request.Model, prompt, content);
 
         return new()
         {
             SystemPrompt = prompt,
             RepurposedText = completion,
+            Language = request.Language,
+            Tone = request.Tone,
+            Touchpoint = request.Touchpoint,
+            Audience = request.Audience,
+            Purpose = request.Purpose,
         };
     }
 
     [Action("Repurpose", Description = "Repurpose content of a file for different target audiences, languages, tone of voices and platforms")]
     public async Task<RepurposeResponse> RepurposeFile(
     [ActionParameter] FileRequest file,
-    [ActionParameter][Display("Instructions")] string styleGuide,
-    [ActionParameter][Display("Model")][DataSource(typeof(ModelHandler))] string? model,
-    [ActionParameter][Display("Language")][StaticDataSource(typeof(LanguageHandler))] string? language,
-    [ActionParameter] GlossaryRequest glossary)
+    [ActionParameter] RepurposeRequest request)
     {
         var fileStream = await fileManagementClient.DownloadAsync(file.File);
 
@@ -76,7 +96,7 @@ public class Actions(InvocationContext invocationContext, IFileManagementClient 
         string? content;
         if (complexContent != null)
         {
-            language ??= complexContent.TargetLanguage;
+            request.Language ??= complexContent.TargetLanguage;
             content = string.Join("\n",complexContent.IterateSegments().Select(x => x.Target == null ? x.GetSource(TagInclusion.Original) : x.GetTarget(TagInclusion.Ignore)));
         } else
         {
@@ -85,7 +105,7 @@ public class Actions(InvocationContext invocationContext, IFileManagementClient 
             content = Encoding.UTF8.GetString(bytes);
         }
 
-        return await RepurposeContent(content, styleGuide, model, language, glossary);
+        return await RepurposeContent(content, request);
     }
 
     private async Task<string?> GetGlossaryPromptPart(FileReference glossary, string sourceContent, bool filter)
@@ -117,6 +137,14 @@ public class Actions(InvocationContext invocationContext, IFileManagementClient 
         }
 
         return entriesIncluded ? glossaryPromptPart.ToString() : null;
+    }
+
+    private string GetTouchpointPromptPart(string touchpoint)
+    {
+        if (touchpoint == "Blog post") return Prompts.BlogPostPrompt;
+        if (touchpoint == "LinkedIn post") return Prompts.LinkedInPrompt;
+        if (touchpoint == "Tweet") return Prompts.TweetPrompt;
+        return touchpoint;
     }
 
 }

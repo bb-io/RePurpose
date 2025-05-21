@@ -46,8 +46,6 @@ public class OpenAIClient : BlackBirdRestClient, ICompletionClient
         {
             model,
             Messages = new List<ChatMessageDto> { new("system", systemPrompt), new("user", userPrompt) },
-            max_tokens = !model.Contains("o1") ? (int?)(maxTokens ?? 4096) : null,
-            max_completion_tokens = model.Contains("o1") ? (int?)(maxTokens ?? 4096) : null,
             top_p = 1,
             presence_penalty = 0,
             frequency_penalty = 0,

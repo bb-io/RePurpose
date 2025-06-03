@@ -161,6 +161,8 @@ A relevant image, GIF, or chart can boost attention.
 
 Use 1–2 well-chosen hashtags if topical (avoid hashtag overload).
 
+Keep the length below 250 characters.
+
 Output:
 A single tweet (or concise thread) that distills the essence of the original content into a format that is engaging, scannable, and shareable.";
 }

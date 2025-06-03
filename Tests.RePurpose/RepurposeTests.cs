@@ -54,9 +54,10 @@ public class RepurposeTests : TestBase
         var actions = new Actions(InvocationContext, FileManagementClient);
         var file = new FileReference { Name = "contentful.html" };
         var instructions = "Pay attention.";
-        var result = await actions.RepurposeFile(new FileRequest { File = file }, new RepurposeRequest { StyleGuide = instructions, Touchpoint = "LinkedIn post" });
-        Console.WriteLine(result.SystemPrompt);
-        Console.WriteLine(result.RepurposedText);
+        var result = await actions.RepurposeFile(new FileRequest { File = file }, new RepurposeRequest { StyleGuide = instructions, Touchpoint = "Tweet" });
+        //Console.WriteLine(result.SystemPrompt);
+        //Console.WriteLine(result.RepurposedText);
+        Console.WriteLine(result.RepurposedText.Length);
         Assert.IsNotNull(result.RepurposedText);
     }
 }

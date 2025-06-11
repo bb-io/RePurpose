@@ -60,4 +60,33 @@ public class RepurposeTests : TestBase
         Console.WriteLine(result.RepurposedText.Length);
         Assert.IsNotNull(result.RepurposedText);
     }
+
+    [TestMethod]
+    public async Task RepurposeFile_works()
+    {
+        var actions = new Actions(InvocationContext, FileManagementClient);
+        var file = new FileReference { Name = "test.json" };
+        var instructions = "";
+        var result = await actions.RepurposeFile(new FileRequest { File = file }, new RepurposeRequest { StyleGuide = instructions, Touchpoint = "",
+            Tone =""  });
+
+        var json = Newtonsoft.Json.JsonConvert.SerializeObject(result, Newtonsoft.Json.Formatting.Indented);
+        Console.WriteLine(json);
+        Assert.IsNotNull(result);
+    }
+
+    [TestMethod]
+    public async Task RepurposeText_works()
+    {
+        var actions = new Actions(InvocationContext, FileManagementClient);
+        var instructions = "";
+        var content = "";
+       var result = await actions.RepurposeContent(content, new RepurposeRequest { StyleGuide = instructions, Touchpoint = "",
+            Tone = "",
+        });
+
+        var json = Newtonsoft.Json.JsonConvert.SerializeObject(result, Newtonsoft.Json.Formatting.Indented);
+        Console.WriteLine(json);
+        Assert.IsNotNull(result);
+    }
 }

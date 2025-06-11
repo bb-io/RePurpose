@@ -16,6 +16,7 @@ using Blackbird.Applications.Sdk.Utils.Extensions.Files;
 using System.Net.Mime;
 using Blackbird.Xliff.Utils.Models.Content;
 using Blackbird.Xliff.Utils.Constants;
+using Apps.RePurpose.Utils;
 
 namespace Apps.RePurpose.Actions;
 
@@ -71,7 +72,7 @@ public class Actions(InvocationContext invocationContext, IFileManagementClient 
             if (glossaryPromptPart != null) prompt += (glossaryAddition + glossaryPromptPart);
         }
 
-        var completion = await Client.ExecuteCompletion(request.Model, prompt, content);
+        var completion = await ErrorHandler.ExecuteWithErrorHandlingAsync(() => Client.ExecuteCompletion(request.Model, prompt, content));
 
         return new()
         {
@@ -90,7 +91,7 @@ public class Actions(InvocationContext invocationContext, IFileManagementClient 
     [ActionParameter] FileRequest file,
     [ActionParameter] RepurposeRequest request)
     {
-        var fileStream = await fileManagementClient.DownloadAsync(file.File);
+        var fileStream = await ErrorHandler.ExecuteWithErrorHandlingAsync(() => fileManagementClient.DownloadAsync(file.File));
 
         var complexContent = await FileGroup.TryParse(fileStream);
         string? content;

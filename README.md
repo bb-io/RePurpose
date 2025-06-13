@@ -47,7 +47,7 @@ Repurpose takes the following parameters:
 - **Purpose** (optional) the purpose of the content if it was not included in instructions.
 - **Audience** (optional) the audience of the content if it was not included in instructions.
 
-> The general repurpose prompt is the following: "Repurpose the content of the message of the user. Do not add any tags, html markdown or otherwise. You also need to consider the following instructions, style elements and guide: {instructions}." Followed by inputs from tone, touchpoint, audience, purpose, language and glossary.
+> The general repurpose prompt is the following: "Repurpose the content of the message of the user. Do not add any tags, html markdown or otherwise. You also need to consider the following instructions, style elements and guide: (instructions)." Followed by inputs from tone, touchpoint, audience, purpose, language and glossary.
 
 ## Feedback
 

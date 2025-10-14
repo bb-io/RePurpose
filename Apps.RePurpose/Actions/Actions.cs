@@ -20,7 +20,7 @@ using Apps.RePurpose.Utils;
 
 namespace Apps.RePurpose.Actions;
 
-[ActionList]
+[ActionList("Repurpose")]
 public class Actions(InvocationContext invocationContext, IFileManagementClient fileManagementClient) : AppInvocable(invocationContext)
 {
     [Action("Repurpose text", Description = "Repurpose content for different target audiences, languages, tone of voices and platforms")]
